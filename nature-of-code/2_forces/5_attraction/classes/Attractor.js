@@ -28,18 +28,22 @@ class Attractor {
     }
 
     displayRings() {
-        strokeWeight(.5);
-        fill(255)
+        strokeWeight(0.4);
+        fill(230)
+        ellipse(this.pos.x, this.pos.y, this.mass * 80, this.mass * 80);
+        
+        strokeWeight(1);
+        fill(180)
         ellipse(this.pos.x, this.pos.y, this.mass * 40, this.mass * 40);
 
-        strokeWeight(1);
-        fill(255)
+        strokeWeight(2);
+        fill(100)
         ellipse(this.pos.x, this.pos.y, this.mass * 20, this.mass * 20);
 
-        strokeWeight(2)
-        ellipse(this.pos.x, this.pos.y, this.mass * 5, this.mass * 5);
+        fill(25, 20, 20)
+        ellipse(this.pos.x, this.pos.y, this.mass * 8, this.mass * 8);
     }
-
+    
     display() {
         ellipseMode(CENTER);
         stroke(0);
@@ -52,8 +56,8 @@ class Attractor {
             fill(175, 200);
 
         this.displayRings();
-
-        fill(255, 0, 0);
+        
+        fill(255,0,0);
         ellipse(this.pos.x, this.pos.y, this.mass, this.mass);
     }
 
