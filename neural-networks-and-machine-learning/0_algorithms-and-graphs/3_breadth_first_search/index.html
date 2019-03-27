@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Breadth-First Search</title>
+    <link rel="stylesheet" href="./css/main.css">
+</head>
+<body>
+    <div id="wrapper">
+        <h1>6 Degrees of Kevin Bacon</h1>
+        <select id="selector" onchange="bfs()"></select>
+    
+        <div id="div_sep">
+            <h6>Degrees of Seperation
+                <br/>
+                <span id="degrees">0</span>
+            </h6>
+        </div> 
+
+        <div id="div_path">
+            <p id="path"></p>
+        </div>    
+    </div>
+    
+
+    <!--jQuery-->
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+              
+    <!-- Custom JS -->
+    <script src="js/classes/Node.js"></script>
+    <script src="js/classes/Graph.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

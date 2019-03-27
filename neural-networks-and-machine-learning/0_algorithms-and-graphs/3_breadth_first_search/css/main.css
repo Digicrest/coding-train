@@ -1,0 +1,30 @@
+body {
+    background-color: linen;
+    font-family: monospace
+}
+
+#wrapper {
+    width: 400px;
+    background-color: firebrick;
+    color: cornsilk;
+    margin: 0 auto;
+    margin-top: 50px;
+    text-align: center;
+    height: 300px;
+    border: 1px solid black;
+    padding: 20px;
+}
+
+#div_sep {
+    margin: 0 auto;
+    background-color: tomato;
+    width: 200px;
+    border-radius: 10px;
+    padding: 1px;
+    margin-top: 15px;
+    font-size: 1.2rem;
+}
+
+#div_path {
+    font-weight: 600
+}
