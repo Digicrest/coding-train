@@ -7,6 +7,7 @@ let stack = [];
 
 function setup() {
   createCanvas(400, 400);
+  // frameRate(30)
   cols = floor(width / w);
   rows = floor(height / w);
 
@@ -28,32 +29,27 @@ function draw() {
   }
 
   current.visited = true;
-  
-  // STEP 1
+
   let next = current.checkNeighbors();
-  
-  // STEP 2
-  if(current.checkNeighbors()){
-     stack.push(current); 
-  } else if(stack.length > 0){
+
+  if (current.checkNeighbors()) {
+    stack.push(current);
+  } else if (stack.length > 0) {
     current = stack.pop()
   } else {
-     console.log("finished") 
+    fill(255, 0, 255, 180)
+    rect(current.x, current.y, current.x + w, current.y + w)
+    console.log("finished")
     noLoop()
   }
-  
-  
-  if(next) {
-    next.visited = true;
-    
-    // 
-    current.removeWalls(next)
-    // STEP 4
-    current = next; 
-  }
-  
-}
 
+  if (next) {
+    next.visited = true;
+
+    current.removeWalls(next)
+    current = next;
+  }
+}
 
 const index = (x, y) => {
   if (x < 0 || y < 0 || x > cols - 1 || y > rows - 1) {
@@ -92,7 +88,12 @@ function Cell(x, y) {
 
     if (this.visited) {
       noStroke();
-      fill(255, 0, 255, 100);
+
+      if (this == current) {
+        fill(0, 255, 0, 100)
+      } else {
+        fill(255, 0, 255, 100);
+      }
       rect(this.x, this.y, w, w);
     }
   }
@@ -114,27 +115,25 @@ function Cell(x, y) {
 
     if (neighbors.length > 0) {
       let r = floor(random(0, neighbors.length));
-      
-      let chosen_neighbor = neighbors[r];
-      return chosen_neighbor;
+      return neighbors[r];
     }
   }
-  
+
   this.removeWalls = function(other) {
-      if(other.x > this.x) {
-        this.walls[1] = false;
-        other.walls[3] = false;
-      } else if(other.x < this.x) {
-        this.walls[3] = false;
-        other.walls[1] = false; 
-      }
-    
-      if(other.y > this.y) {
-        this.walls[2] = false;
-        other.walls[0] = false;
-      } else if(other.y < this.y) {
-        this.walls[0] = false;
-        other.walls[2] = false; 
-      } 
+    if (other.x > this.x) {
+      this.walls[1] = false;
+      other.walls[3] = false;
+    } else if (other.x < this.x) {
+      this.walls[3] = false;
+      other.walls[1] = false;
+    }
+
+    if (other.y > this.y) {
+      this.walls[2] = false;
+      other.walls[0] = false;
+    } else if (other.y < this.y) {
+      this.walls[0] = false;
+      other.walls[2] = false;
+    }
   }
 }
