@@ -38,9 +38,9 @@ function draw() {
 
 
 const index = (x, y) => {
-  // if (i < 0 || j < 0 || i > cols - 1 || j > rows - 1) {
-  //   return 01;
-  // }
+  if (x < 0 || y < 0 || x > cols - 1 || y > rows - 1) {
+    return -1;
+  }
   return x + y * cols;
 }
 
@@ -91,7 +91,6 @@ function Cell(x, y) {
     [top, right, bottom, left].forEach(n => {
       if (n && !n.visited) {
         neighbors.push(n);
-        console.log(n)
       }
     });
 
