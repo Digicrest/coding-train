@@ -3,6 +3,7 @@ let w = 20;
 let grid = [];
 
 let current;
+let stack = [];
 
 function setup() {
   createCanvas(400, 400);
@@ -28,10 +29,26 @@ function draw() {
 
   current.visited = true;
   
+  // STEP 1
   let next = current.checkNeighbors();
+  
+  // STEP 2
+  if(current.checkNeighbors()){
+     stack.push(current); 
+  } else if(stack.length > 0){
+    current = stack.pop()
+  } else {
+     console.log("finished") 
+    noLoop()
+  }
+  
   
   if(next) {
     next.visited = true;
+    
+    // 
+    current.removeWalls(next)
+    // STEP 4
     current = next; 
   }
   
@@ -99,7 +116,6 @@ function Cell(x, y) {
       let r = floor(random(0, neighbors.length));
       
       let chosen_neighbor = neighbors[r];
-      this.removeWalls(chosen_neighbor)
       return chosen_neighbor;
     }
   }
