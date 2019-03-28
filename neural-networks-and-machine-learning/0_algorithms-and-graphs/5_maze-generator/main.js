@@ -1,5 +1,5 @@
 let cols, rows;
-let w = 40;
+let w = 20;
 let grid = [];
 
 let current;
@@ -29,9 +29,10 @@ function draw() {
   current.visited = true;
   
   let next = current.checkNeighbors();
+  
   if(next) {
     next.visited = true;
-     current = next; 
+    current = next; 
   }
   
 }
@@ -96,7 +97,28 @@ function Cell(x, y) {
 
     if (neighbors.length > 0) {
       let r = floor(random(0, neighbors.length));
-      return neighbors[r];
+      
+      let chosen_neighbor = neighbors[r];
+      this.removeWalls(chosen_neighbor)
+      return chosen_neighbor;
     }
+  }
+  
+  this.removeWalls = function(other) {
+      if(other.x > this.x) {
+        this.walls[1] = false;
+        other.walls[3] = false;
+      } else if(other.x < this.x) {
+        this.walls[3] = false;
+        other.walls[1] = false; 
+      }
+    
+      if(other.y > this.y) {
+        this.walls[2] = false;
+        other.walls[0] = false;
+      } else if(other.y < this.y) {
+        this.walls[0] = false;
+        other.walls[2] = false; 
+      } 
   }
 }
