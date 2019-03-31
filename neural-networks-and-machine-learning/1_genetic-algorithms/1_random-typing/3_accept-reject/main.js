@@ -46,18 +46,37 @@ function draw() {
   population = newGeneration();
 }
 
-// Accept / Reject
+// // Accept / Reject
+// function getParents() {
+//   let parents = [];
+
+//   while (parents.length < 2) {
+//     let random_member = population[floor(random(population.length - 1))];
+    
+//     if (random(TARGET_PHRASE.length) < random_member.fitness) {
+//       parents.push(random_member);
+//     }   
+//   }
+  
+//   return parents;
+// }
+
+// Improved Accept / Reject
 function getParents() {
   let parents = [];
 
   while (parents.length < 2) {
-    let random_member = population[floor(random(population.length - 1))];
+    let index = 0;
+    let random = Math.floor(Math.random(TARGET_PHRASE.length));
+
+    do {
+      random -= population[index].fitness
+      index++;
+    } while(random > 0)
     
-    if (random(TARGET_PHRASE.length) < random_member.fitness) {
-      parents.push(random_member);
-    }   
+    parents.push(population[index])
   }
-  
+   
   return parents;
 }
 
