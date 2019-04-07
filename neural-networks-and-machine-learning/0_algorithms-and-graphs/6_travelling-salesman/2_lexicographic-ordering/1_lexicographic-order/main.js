@@ -1,11 +1,11 @@
-const values = ["a", "b", "c"];
+const values = ["a", "b", "c", "d", "e", "f"];
 
 function setup() {
   createCanvas(400, 400);
 }
 
 function draw() {
-  background(220);
+  background(130);
 
   // STEP 1
   // Find highest index where value is lower than next element
@@ -37,6 +37,19 @@ function draw() {
   let endArray = values.splice(largestX + 1);
   endArray.reverse();
   values.push(...endArray)
+  
+  render(values);
+}
+
+function render(arr) {
+  textSize(64);
+  let s = '';
+  
+  for (let i = 0; i < arr.length; i++) {
+    s += arr[i];
+  }
+  fill(255);
+  text(s, 100, height/2);
 }
 
 function swap(arr, a, b) {
