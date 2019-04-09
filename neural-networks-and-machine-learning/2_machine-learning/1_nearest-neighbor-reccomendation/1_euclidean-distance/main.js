@@ -25,6 +25,8 @@ function setup() {
   button.mousePressed(euclideanSimilarity);
 
   resultP = createP('');
+  
+
   function euclideanSimilarity() {
     let person1 = users[select1.value()];
     let person2 = users[select2.value()];
