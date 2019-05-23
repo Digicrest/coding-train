@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Tabular Data</title>
+</head>
+<body>
+    <script >
+        async function getData() {
+            const csv  = await fetch('./global_temps.csv');
+            const text = await csv.text();
+
+            let raw_table   = text.split('\n');
+            let raw_headers = raw_table.splice(0, 1)[0];
+
+            let ready = raw_table.map(row => {
+                let columns = row.split(',');
+                let headers = raw_headers.split(',');
+
+                return headers.map((header, index) => {
+                    return { [header]: columns[index] }
+                }).reduce((acc, item) => {
+                    const key = Object.keys(item)[0];
+                    const value = item[key]
+
+                    acc[key] = value;
+                    return acc;
+                }, {})
+            })
+            ready.splice(-1, 1);
+        }
+        getData();
+
+    </script>
+</body>
+</html>
