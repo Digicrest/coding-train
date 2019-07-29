@@ -33,8 +33,7 @@ new Vue({
                 alert(this.error_message)
             }
         },
-
-        // position = { i: Number, j: Number }
+        
         checkValidMove: function (x, y) {
             this.error_message = ""
 
