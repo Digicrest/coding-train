@@ -1,33 +1,140 @@
 <!DOCTYPE html>
 <html lang='en'>
+
 <head>
     <meta charset='UTF-8'>
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
     <meta http-equiv='X-UA-Compatible' content='ie=edge'>
     <title>TicTacToe</title>
-     
+
     <!-- App -->
-    <link rel="stylesheet" href="./app.css">
+    <!-- <link rel="stylesheet" href="./app.css"> -->
 </head>
+
 <body>
-    <div id='app' class="container">
+    <!-- <div id='app' class="container">
         <div class='board'>
-            <div id='one'   class='cell' @click='move(0, 0)'>{{ board[0][0] }}</div>
-            <div id='two'   class='cell' @click='move(0, 1)'>{{ board[0][1] }}</div>
+            <div id='one' class='cell' @click='move(0, 0)'>{{ board[0][0] }}</div>
+            <div id='two' class='cell' @click='move(0, 1)'>{{ board[0][1] }}</div>
             <div id='three' class='cell' @click='move(0, 2)'>{{ board[0][2] }}</div>
-            <div id='four'  class='cell' @click='move(1, 0)'>{{ board[1][0] }}</div>
-            <div id='five'  class='cell' @click='move(1, 1)'>{{ board[1][1] }}</div>
-            <div id='six'   class='cell' @click='move(1, 2)'>{{ board[1][2] }}</div>
+            <div id='four' class='cell' @click='move(1, 0)'>{{ board[1][0] }}</div>
+            <div id='five' class='cell' @click='move(1, 1)'>{{ board[1][1] }}</div>
+            <div id='six' class='cell' @click='move(1, 2)'>{{ board[1][2] }}</div>
             <div id='seven' class='cell' @click='move(2, 0)'>{{ board[2][0] }}</div>
             <div id='eight' class='cell' @click='move(2, 1)'>{{ board[2][1] }}</div>
-            <div id='nine'  class='cell' @click='move(2, 2)'>{{ board[2][2] }}</div>
+            <div id='nine' class='cell' @click='move(2, 2)'>{{ board[2][2] }}</div>
         </div>
+        <h3>{{ victory_message }}</h3>
         <h4>Next - <span>{{x_is_next ? 'X' : 'O'}}</span></h4>
     </div>
 
-    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script> -->
 
     <!-- App -->
-    <script src="./app.js"></script>
+    <!-- <script src="./app.js"></script> -->
+    <!-- <script src="./app-with-ai.js" type='module'></script> -->
+
+    <canvas id="myChart"></canvas>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.js'></script>
+    <script>
+      //   export default
+      class Neuron {
+            constructor(inputs = []) {
+                this.inputs = inputs
+                this.weights = [0, 0].map(n => Math.random())
+                this.bias = Math.random()
+            }
+
+
+            // activate / guess / fire / trigger
+            guess = () => {
+                const weighted_sum = this.sum_weights();
+                console.log('weighted su', weighted_sum)
+                const outputs = sign(weighted_sum) > 0 ? 'A' : 'B'
+                console.log('sign(weighted_sum)', sign(weighted_sum))
+                console.log('outputs', outputs)
+                return outputs
+            }
+
+
+            // sum of all input values multiplied by their corresponding weight value
+            sum_weights = () => {
+                return this.inputs.x * this.weights[0] + this.inputs.y * this.weights[1] + this.bias
+                // return this.inputs
+                //     .map((input, i) => input * this.weights[i])
+                //     .reduce((sum, val) => sum += val, this.bias)
+            }
+
+
+            // reduce loss / minimize error
+            adjust_weights = (labels, learning_rate) => {
+                console.log(`--- New Neuron ---`)
+
+                const error = labels.reduce((acc, label) => {
+                    if (this.output < label || this.output > label) {
+                        return acc += 1;
+                    }
+                    return acc;
+                }, 0);
+
+                return this.weights.map(weight => {
+                    if (error === 0) return weight
+
+                    const new_weight = sigmoid(weight + error * learning_rate);
+                    return new_weight
+                });
+            }
+        }
+
+        // ACTIVATION FUNCTIONS
+        const sigmoid = t => 1 / (1 + Math.pow(Math.E, -t));
+        const sign = t => t > 0 ? 1 : -1;
+
+        // DATA
+        const plot_size = { width: 600, height: 400 };
+
+        // arbitrary dividing line for classification
+        const divider = 250
+
+        // randomly plotted coordinates
+        const training_inputs = new Array(50).fill(0).map(coordinate => {
+            return {
+                x: Math.round(Math.random() * plot_size.width) + 1,
+                y: Math.round(Math.random() * plot_size.height) + 1
+            }
+        });
+
+        // assign labels to our trainign data
+        const labels = training_inputs.map(input => input.y > divider ? 'A' : 'B')
+
+        console.log(training_inputs.map((coord, i) => labels[i]))
+        training_inputs.forEach(coordinate => {
+            let n = new Neuron(coordinate);
+
+            console.log(n.guess())
+        })
+        var scatterChart = new Chart(document.getElementById('myChart'), {
+            type: 'scatter',
+            data: {
+                datasets: [{
+                    label: 'Training Data', 
+                    backgroundColor: 'rgb(255, 99, 132)',
+                    borderColor: 'rgb(255, 99, 132)',
+                    pointBackgroundColor: 'rgb(255, 0, 0)',
+                    data: training_inputs,
+                }]
+            },
+            options: {
+                scales: {
+                    xAxes: [{
+                        type: 'linear',
+                        position: 'bottom'
+                    }]
+                }
+            }
+        });
+    </script>
+
 </body>
+
 </html>

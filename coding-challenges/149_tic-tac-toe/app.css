@@ -56,3 +56,9 @@ h4 {
 h4 > span {
     color: orange;
 }
+
+h3 {
+    font-size: 0.8rem;
+    color: lime;
+    font-family: 'Courier New', Courier, monospace
+}
