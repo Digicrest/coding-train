@@ -3,7 +3,7 @@
 //  2. rotate top left and top right
 //  3. connect them
 
-let order = 2;
+let order = 3;
 let N = Math.pow(2, order)
 let total = N * N
 let path = new Array(total).fill([])
@@ -64,26 +64,27 @@ function hilbert(i) {
     let index = i & 3;
     let v = points[index]
     
-    i = i >> 2;
-    index = i & 3
 
-    let len = order
+    for (let j = 1; j < order; j++) {
+        i = i >> 2;
+        index = i & 3
 
-    if (index === 0) {
-        let temp = v.x
-        v.x = v.y;
-        v.y = temp;
-    } else if (index === 1) {
-        v.y += len
-    } else if (index === 2) {
-        v.x += len
-        v.y += len
-    } else if (index === 3) {
-        let temp = 1- v.x
-        v.x = 1 - v.y;
-        v.y = temp;
-
-        v.x += len
+        let len = j * 2
+        if (index === 0) {
+            let temp = v.x
+            v.x = v.y;
+            v.y = temp;
+        } else if (index === 1) {
+            v.y += len
+        } else if (index === 2) {
+            v.x += len
+            v.y += len
+        } else if (index === 3) {
+            let temp =  len- 1- v.x
+            v.x = len-  1 - v.y;
+            v.y = temp;
+            v.x += len
+        }
     }
 
     return v
@@ -107,8 +108,8 @@ function draw(context) {
         context.fillStyle='#0F0'
         context.fillRect(path[i].x - 2.5, path[i].y -2.5, 5, 5)
 
-        context.fillStyle='#FFF'
-        context.fillText(i, path[i].x - 10, path[i].y- 5, 10)
+        // context.fillStyle='#FFF'
+        // context.fillText(i, path[i].x - 10, path[i].y- 5, 10)
         
         context.stroke()
     }
