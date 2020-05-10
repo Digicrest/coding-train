@@ -3,7 +3,7 @@
 //  2. rotate top left and top right
 //  3. connect them
 
-let order = 1;
+let order = 2;
 let N = Math.pow(2, order)
 let total = N * N
 let path = new Array(total).fill([])
@@ -16,8 +16,17 @@ const report = () => {
     console.log(`=============================================`)
 }
 
-const mult = (arr, n) => arr.map(i => i * n)
-const add = (arr, n) => arr.map(i => i + n)
+const mult = (vector, n) => {
+    vector.x *= n
+    vector.y *= n
+    return vector
+ }
+
+ const add = (vector, n) => {
+    vector.x += n
+    vector.y += n
+    return vector
+ }
 
 window.addEventListener('load', () => {
     report()
@@ -45,8 +54,32 @@ function setup() {
 }
 
 function hilbert(i) {
-    let points = [[0, 0], [0, 1], [1, 1], [1, 0]]
-    return points[i]
+    let points = [
+        { x: 0, y: 0 },
+        { x: 0, y: 1 },
+        { x: 1, y: 1 },
+        { x: 1, y: 0 }
+    ]
+
+    let index = i & 3;
+    let v = points[index]
+    
+    i = i >> 2;
+    index = i & 3
+
+    let len = order
+
+    if (index === 0) {
+    } else if (index === 1) {
+        v.y += len
+    } else if (index === 2) {
+        v.x += len
+        v.y += len
+    } else if (index === 3) {
+        v.x += len
+    }
+
+    return v
 }
 
 function draw(context) {
@@ -54,8 +87,8 @@ function draw(context) {
     context.beginPath()
     context.strokeStyle='#FFF'
     for (let i = 0; i < path.length - 1; i++) {
-        context.moveTo(path[i][0], path[i][1])
-        context.lineTo(path[i + 1][0], path[i + 1][1])
+        context.moveTo(path[i].x, path[i].y)
+        context.lineTo(path[i + 1].x, path[i + 1].y)
         context.stroke()
     }
     context.closePath()
@@ -65,10 +98,10 @@ function draw(context) {
     context.beginPath()
     for (let i = 0; i < path.length; i++) {
         context.fillStyle='#0F0'
-        context.fillRect(path[i][0] - 2.5, path[i][1] -2.5, 5, 5)
+        context.fillRect(path[i].x - 2.5, path[i].y -2.5, 5, 5)
 
         context.fillStyle='#FFF'
-        context.fillText(i, path[i][0] - 10, path[i][1] - 5, 10)
+        context.fillText(i, path[i].x - 10, path[i].y- 5, 10)
         
         context.stroke()
     }
