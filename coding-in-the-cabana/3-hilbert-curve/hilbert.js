@@ -1,5 +1,5 @@
-// take the previous curve
-// tile it
+// 0. take the previous curve
+// 1. tile it
 //  2. rotate top left and top right
 //  3. connect them
 
@@ -7,14 +7,6 @@ let order = 5;
 let N = Math.pow(2, order)
 let total = N * N
 let path = new Array(total).fill([])
-
-const report = () => {
-    console.log(`================== ORDER ${order} ==================`)
-    console.log('N:', N)
-    console.log('Total: ', total)
-    console.log('Path: ', path)
-    console.log(`=============================================`)
-}
 
 const mult = (vector, n) => {
     vector.x *= n
@@ -28,22 +20,13 @@ const mult = (vector, n) => {
     return vector
  }
 
-window.addEventListener('load', () => {
-    report()
-    setup()
-})
-
+window.addEventListener('load', setup)
 
 function setup() {
     const canvas = document.getElementById('canvas')
     const context = canvas.getContext('2d')
-
-    // Draw the Background
     context.fillStyle='#000'; 
-    context.fillRect(0, 0, 512, 512)
-
-    // Redraw the canvas 
-    setInterval(() => draw(context), 2000);
+    context.fillRect(0, 0, 5120, 5120)
 
     for (let i = 0; i < total; i++) {
         path[i] = hilbert(i)
@@ -51,6 +34,31 @@ function setup() {
         path[i] = mult(path[i], lineLength)
         path[i] = add(path[i], lineLength /2)
     }
+
+    setInterval(() => draw(context), 25);
+}
+
+let counter = 0;
+function draw(context) {
+    if (counter > 0 && counter === path.length) {
+        setTimeout(() => {
+            counter = 0
+            context.fillStyle='#000'; 
+            context.fillRect(0, 0, 5120, 5120)
+        }, 1000)
+        return;
+    }
+
+    // Draw Lines of Curve
+    context.beginPath()
+    context.strokeStyle='#FFF'
+    for (let i = 0; i < counter; i++) {
+        context.moveTo(path[i].x, path[i].y)
+        context.lineTo(path[i + 1].x, path[i + 1].y)
+        context.stroke()
+    }
+    context.closePath()
+    counter++;
 }
 
 function hilbert(i) {
@@ -89,32 +97,4 @@ function hilbert(i) {
 
     return v
 }
-
-function draw(context) {
-    // Draw Lines of Curve
-    context.beginPath()
-    context.strokeStyle='#FFF'
-    for (let i = 0; i < path.length - 1; i++) {
-        context.moveTo(path[i].x, path[i].y)
-        context.lineTo(path[i + 1].x, path[i + 1].y)
-        context.stroke()
-    }
-    context.closePath()
-    
-
-    // Draw Points for Vertices
-    // context.beginPath()
-    // for (let i = 0; i < path.length; i++) {
-    //     context.fillStyle='#0F0'
-    //     context.fillRect(path[i].x - 2.5, path[i].y -2.5, 5, 5)
-
-    //     context.fillStyle='#FFF'
-    //     context.fillText(i, path[i].x - 10, path[i].y- 5, 10)
-        
-    //     context.stroke()
-    // }
-    // context.closePath()
-}
-
-
 
