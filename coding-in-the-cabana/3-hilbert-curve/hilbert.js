@@ -70,12 +70,19 @@ function hilbert(i) {
     let len = order
 
     if (index === 0) {
+        let temp = v.x
+        v.x = v.y;
+        v.y = temp;
     } else if (index === 1) {
         v.y += len
     } else if (index === 2) {
         v.x += len
         v.y += len
     } else if (index === 3) {
+        let temp = 1- v.x
+        v.x = 1 - v.y;
+        v.y = temp;
+
         v.x += len
     }
 
